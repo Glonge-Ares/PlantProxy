@@ -179,6 +179,9 @@ int inspection(Connection* src, Connection* dst, BanList* ban_list, std::map <in
 int main()
 {
 
+	std::string main_server_ip = "127.0.0.1";
+	int main_server_port = 25565;
+	
 	printf("Welcome to Plant proxy (Version 1.0)\n");
 	
 	BanList ban_list;
@@ -269,7 +272,7 @@ int main()
 					//ev.events = EPOLLRDHUP | EPOLLERR | EPOLLET | EPOLLOUT;
 					ev.data.fd = connection;
 
-					int server = socket_connect("51.68.139.22", 25565);
+					int server = socket_connect(main_server_ip.c_str(), main_server_port);
 
 					setnonblocking(server);
 					int yes = 1;
@@ -320,8 +323,6 @@ int main()
 				if (events[k].events & EPOLLIN)
 				{
 					
-					
-					
 					if(connectionList.find(events[k].data.fd) != connectionList.end())
 					{
 						Connection* src = connectionList.find(events[k].data.fd)->second;
@@ -370,8 +371,6 @@ int main()
 					{
 						Connection* dst = connectionList.find(events[k].data.fd)->second;
 						
-						//if(dst->src == -1)
-						//	continue;
 						
 						if(dst->len != 0)
 						{
@@ -412,25 +411,8 @@ int main()
 						close(events[k].data.fd);
 						
 					}
-					
-			
 				}
-
        			}
-				
-				
-				
-				
-				
-			
 		}
 	}
-
 }
-		
-		
-		
-		
-		
-
-
